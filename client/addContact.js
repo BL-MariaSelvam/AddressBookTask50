@@ -1,23 +1,47 @@
 const form = document.getElementById("contactForm");
 const cancelBtn = document.getElementById("cancelBtn");
+const nameInput = document.getElementById("name");
+const phoneInput = document.getElementById("phone");
+const cityInput = document.getElementById("city");
 
-cancelBtn.addEventListener("click", () => {
-  window.location.href = "index.html";
-});
+const urlParams = new URLSearchParams(window.location.search);
+const contactId = urlParams.get("id");
 
-form.addEventListener("submit", event => {
-  event.preventDefault();
+cancelBtn.onclick = () => window.location.href = "index.html";
+
+// ---------- LOAD DATA IF EDIT ----------
+if (contactId) {
+  getContacts().then(contacts => {
+    const contact = contacts.find(c => c.id == contactId);
+    if (contact) {
+      nameInput.value = contact.name;
+      phoneInput.value = contact.phone;
+      cityInput.value = contact.city;
+    }
+  });
+}
+
+// ---------- SAVE / UPDATE ----------
+form.onsubmit = e => {
+  e.preventDefault();
 
   const contact = {
-    name: document.getElementById("name").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    city: document.getElementById("city").value.trim()
+    name: nameInput.value.trim(),
+    phone: phoneInput.value.trim(),
+    city: cityInput.value.trim()
   };
 
-  addContact(contact)
-    .then(() => {
-      alert("Contact Added Successfully");
-      window.location.href = "index.html";
-    })
-    .catch(err => alert(err));
-});
+  if (contactId) {
+    updateContact(contactId, contact)
+      .then(() => {
+        alert("Contact Updated");
+        window.location.href = "index.html";
+      });
+  } else {
+    addContact(contact)
+      .then(() => {
+        alert("Contact Added");
+        window.location.href = "index.html";
+      });
+  }
+};

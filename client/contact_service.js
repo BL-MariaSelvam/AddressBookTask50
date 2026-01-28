@@ -16,3 +16,13 @@ function addContact(contact) {
 function deleteContact(id) {
   return makeServiceCall("DELETE", `${baseUrl}/${id}`);
 }
+
+// UPDATE Contact
+function updateContact(id, contact) {
+  return makeServiceCall(
+    "PUT",
+    `${baseUrl}/${id}`,
+    true,
+    contact
+  ).then(res => JSON.parse(res));
+}

@@ -19,14 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
         contacts.forEach(contact => {
           const row = document.createElement("div");
           row.className = "row";
-          row.innerHTML = `
-            <span>${contact.name}</span>
-            <span>${contact.phone}</span>
-            <span>${contact.city}</span>
-            <span>
-              <button onclick="removeContact(${contact.id})">🗑</button>
-            </span>
-          `;
+        row.innerHTML = `
+  <span>${contact.name}</span>
+  <span>${contact.phone}</span>
+  <span>${contact.city}</span>
+  <span>
+    <button onclick="editContact(${contact.id})">✏️</button>
+    <button onclick="removeContact(${contact.id})">🗑</button>
+  </span>
+`;
+
           contactList.appendChild(row);
         });
       })
@@ -39,5 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  window.editContact = function(id) {
+  window.location.href = `addContact.html?id=${id}`;
+};
+
+
   renderContacts();
 });
+    
